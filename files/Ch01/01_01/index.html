@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Ch1</title>
+   
+</head>
+  <body>
+    <button id="newCatButton">New Cat</button>
+    <hr />
+    <div id="main">The main div here ... right? </div>
+  </body>
+
+  <script type="application/javascript">
+    let mainDiv = document.getElementById("main")
+    let newCatButton = document.getElementById('newCatButton')
+    let catImgUrl = ''
+
+    newCatButton.addEventListener('click', () => {
+      console.log('newCatButton clicked')
+      console.log('catImgUrl: ', catImgUrl)
+      getRandomCat()
+      loadCatPic(catImgUrl)
+    })
+
+    getRandomCat = () => { 
+      fetch('https://api.thecatapi.com/v1/images/search')
+      .then((response) => {
+        return response.json();
+      })
+      .then((catJson) => {
+        console.log('catJson: ', catJson[0].url)
+        // return catJson[0].url
+        catImgUrl = catJson[0].url
+      })
+    }
+    
+    let loadCatPic = (catUrl) => {
+      mainDiv.innerHTML = (`
+        <div>
+          <h1>Cat pic</h1>
+          <img src="${catUrl}" width="350px">
+          </div>
+      `)
+      console.log('hey this worked')
+    }
+
+    if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)
+    ) {
+      document.addEventListener("DOMContentLoaded", loadCatPic());
+    }
+      
+  </script>
+</html>
